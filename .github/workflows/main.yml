@@ -41,5 +41,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ruanwill/indoortvcore:${{ github.run_number }}
+            ruanwill/indoortvcore:${{ github.sha }}
             ruanwill/indoortvcore:latest
