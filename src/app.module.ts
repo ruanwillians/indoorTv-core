@@ -7,11 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [() => ({
-        DATABASE_URL: process.env.DATABASE_URL,
-        JWT_SECRET: process.env.JWT_SECRET,
-        NODE_ENV: process.env.NODE_ENV
-      })],
+      load: [
+        () => ({
+          DATABASE_URL: process.env.DATABASE_URL,
+          JWT_SECRET: process.env.JWT_SECRET,
+          NODE_ENV: process.env.NODE_ENV,
+        }),
+      ],
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
@@ -23,10 +25,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         return {
           type: 'postgres',
           url: configService.get<string>('DATABASE_URL'),
-          entities: [], 
-          synchronize: true, 
-          ssl: prod ? { rejectUnauthorized: false } : false, 
-          tls: prod ? { rejectUnauthorized: false } : false, 
+          entities: [],
+          synchronize: true,
+          ssl: prod ? { rejectUnauthorized: false } : false,
+          tls: prod ? { rejectUnauthorized: false } : false,
           options: { encrypt: false, trustServerCertificate: true },
         };
       },
