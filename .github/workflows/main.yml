@@ -18,7 +18,13 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Install Jest and dependencies
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Install Jest and other dev dependencies
         run: npm install jest @types/jest ts-jest --save-dev
 
       - run: npm run test
