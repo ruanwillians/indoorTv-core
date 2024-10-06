@@ -12,3 +12,57 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id              String          @id @default(uuid()) @db.Uuid
+  name            String
+  email           String          @unique
+  password        String
+  isActive        Boolean
+  document        String
+  updatedAt       DateTime        @map("updated_at")
+  createdAt       DateTime        @map("created_at")
+  companies       Company[]       @relation("OwnerToCompany")
+  companyAccesses CompanyAccess[]
+}
+
+model Company {
+  id        String          @id @default(uuid()) @db.Uuid
+  name      String
+  document  String
+  updatedAt DateTime        @map("updated_at")
+  createdAt DateTime        @map("created_at")
+  ownerId   String          @db.Uuid
+  owner     User            @relation("OwnerToCompany", fields: [ownerId], references: [id])
+  accesses  CompanyAccess[]
+  addresses Address[]       @relation("CompanyAddress")
+}
+
+model Address {
+  id        String   @id @default(uuid()) @db.Uuid
+  street    String
+  city      String
+  state     String
+  zipCode   String
+  country   String
+  companyId String   @db.Uuid
+  company   Company  @relation("CompanyAddress", fields: [companyId], references: [id])
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
+}
+
+model CompanyAccess {
+  id        String     @id @default(uuid()) @db.Uuid
+  userId    String     @db.Uuid
+  companyId String     @db.Uuid
+  user      User       @relation(fields: [userId], references: [id])
+  company   Company    @relation(fields: [companyId], references: [id])
+  role      Permission @default(USER)
+
+  @@unique([userId, companyId])
+}
+
+enum Permission {
+  USER
+  ADMIN
+}
