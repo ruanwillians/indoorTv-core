@@ -12,8 +12,13 @@ RUN npx prisma generate
 
 RUN npm run build
 
-RUN npx prisma migrate deploy
+# Crie um script de inicialização
+COPY start.sh .
+
+# Torne o script executável
+RUN chmod +x start.sh
 
 EXPOSE 8080
 
-CMD ["npm", "run", "start:prod"]
+# Execute o script de inicialização
+CMD ["./start.sh"]
