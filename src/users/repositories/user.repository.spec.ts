@@ -72,7 +72,22 @@ describe('UserRepository', () => {
 
       const result: ListUserDto[] = await userRepository.findAll();
 
-      expect(result).toEqual(mockUsers);
+      expect(result).toEqual([
+        {
+          id: '1',
+          name: 'User 1',
+          email: 'user1@example.com',
+          document: '123456',
+          isActive: true,
+        },
+        {
+          id: '2',
+          name: 'User 2',
+          email: 'user2@example.com',
+          document: '654321',
+          isActive: true,
+        },
+      ]);
       expect(prismaService.user.findMany).toHaveBeenCalledWith({
         take: 10,
         skip: 0,
@@ -148,7 +163,13 @@ describe('UserRepository', () => {
 
       const result = await userRepository.findById('1');
 
-      expect(result).toEqual(mockUser);
+      expect(result).toEqual({
+        id: mockUser.id,
+        name: mockUser.name,
+        email: mockUser.email,
+        document: mockUser.document,
+        isActive: mockUser.isActive,
+      });
     });
 
     it('should throw NotFoundException if user is not found', async () => {
@@ -177,7 +198,13 @@ describe('UserRepository', () => {
 
       const result = await userRepository.findByEmail('user1@example.com');
 
-      expect(result).toEqual(mockUser);
+      expect(result).toEqual({
+        id: mockUser.id,
+        name: mockUser.name,
+        email: mockUser.email,
+        document: mockUser.document,
+        isActive: mockUser.isActive,
+      });
     });
 
     it('should return null if user is not found', async () => {
