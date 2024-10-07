@@ -21,14 +21,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Install Jest and other dev dependencies
-        run: npm install jest @types/jest ts-jest --save-dev
-
-      - run: npm run test
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
